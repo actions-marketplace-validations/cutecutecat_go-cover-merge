@@ -1,0 +1,19 @@
+name: go-cover-merge
+description: "Merge several golang coverage files into one"
+branding:
+  icon: 'align-center'
+  color: 'yellow'
+inputs:
+  input_dir:
+    description: "Input dir contains coverage files(.out) to be merged"
+    required: true
+  output_file:
+    default: coverage_sum.out
+    description: "Output file coverage file(.out) of merged files"
+    required: false
+runs:
+  using: docker
+  image: Dockerfile
+  env:
+    input_dir: "${{ inputs.input_dir }}"
+    output_file: "${{ inputs.output_file }}"

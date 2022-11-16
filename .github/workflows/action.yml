@@ -1,0 +1,28 @@
+name: Action usage
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  test:
+    strategy:
+        matrix:
+          test-case:
+          - atomic
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout go-cover-merge
+      uses: actions/checkout@v2
+      with:
+        repository: 'cutecutecat/go-cover-merge'
+        ref: 'main'
+    - name: Merge case in test directory
+      uses: ./
+      with:
+        input_dir: test/${{ matrix.test-case }}/input
+        output_file: coverage_sum.out
+    - name: Check file same
+      run: cmp test/${{ matrix.test-case }}/output/coverage_sum.out coverage_sum.out
